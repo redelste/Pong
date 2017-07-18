@@ -1,0 +1,139 @@
+<html lang="en">
+
+<canvas id = "gameCanvas" width="800" height="600">
+</canvas>
+
+
+<script>
+var canvas; //handle on info about dimensions of display area
+var canvasContext;  //underlying information
+
+//testing shit
+var x = 10; //the location on the x axis
+var y = 10; //the location on the y axis.
+var speedX = 5;
+var speedY = 2;
+
+var paddle1Y = 250;
+var paddle2Y = 250;
+const PADDLE_WIDTH = 10;
+const PADDLE_HEIGHT = 100;
+
+var player1Score = 0;
+var player2Score = 0;
+
+
+function calculateMousePos(evt) //evt = event data
+{
+  //mouse tracking
+  var rect = canvas.getBoundingClientRect(); //area of black rectangle or cavnas
+  var root = document.documentElement;
+  var mouseX= evt.clientX - rect.left - root.scrollLeft;
+  var mouseY = evt.clientY - rect.top - root.scrollTop;
+  return{
+    x:mouseX,
+    y:mouseY
+  };
+}
+
+
+window.onload = function() { //code inside will not load until page is finished laoding
+  canvas = document.getElementById('gameCanvas');
+  canvasContext = canvas.getContext('2d');
+
+  var fps = 60; //fps
+
+  setInterval(function(){
+    moveShit();
+    drawShit();}, 1000/fps);
+
+    canvas.addEventListener('mousemove', //takes in input from mouse.
+                                function(evt)
+                                {
+                                  var mousePos = calculateMousePos(evt);
+                                  paddle1Y = mousePos.y-(PADDLE_HEIGHT/2);
+                                })
+}
+
+
+function reset() {
+  x = canvas.width/2;
+  y = canvas.height/2;
+  speedX = -speedX;
+}
+
+function computerMovement(){
+  var paddle2Ycenter = paddle2Y +(PADDLE_HEIGHT/2);
+  if(paddle2Ycenter < y - 45)
+  {
+    paddle2Y =  paddle2Y + 5;
+  }
+  else if(paddle2Ycenter > y + 45){
+    paddle2Y = paddle2Y - 5;
+  }
+}
+function moveShit()
+{
+  computerMovement();
+  x = x + speedX;
+  y = y + speedY;
+  if(x >= 769.976) //ball passes right
+  {
+    if(y > paddle2Y && y < paddle2Y+PADDLE_HEIGHT) //y is the ball's y coordinate
+    {
+      speedX = -speedX;
+    }
+    else
+    {
+      player1Score += 1;
+      reset();
+
+    }
+  }
+  if(x <= 19.976){ //ball passing left
+    if(y > paddle1Y && y < paddle1Y+PADDLE_HEIGHT) //y is the ball's y coordinate
+    {
+      speedX = -speedX;
+    }
+    else
+    {
+      reset();
+      player2Score += 1;
+    }
+
+  }
+  if(y >= 590)
+  {
+    speedY = -speedY;
+  }
+  if(y <= 10)
+  {
+    speedY = -speedY;
+  }
+}
+
+function drawShit()
+{
+
+
+  colorRect(0,0, canvas.width, canvas.height,'black');
+  colorRect(10,paddle1Y,PADDLE_WIDTH,PADDLE_HEIGHT, 'white'); //paddle left
+  colorRect(canvas.width-20, paddle2Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'white');
+  colorRect(x,y,10,10,'red'); //ball
+  canvasContext.fillStyle = 'white';
+  canvasContext.fillText(player1Score, 100,100);
+  canvasContext.fillStyle = 'white';
+  canvasContext.fillText(player2Score, canvas.width-100, 100);
+}
+
+function colorRect(leftX,topY, width, height, drawColor)
+{
+  canvasContext.fillStyle = drawColor;
+  canvasContext.fillRect(leftX,topY, width,height);
+}
+
+
+
+</script>
+
+</html>
