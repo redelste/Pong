@@ -1,0 +1,91 @@
+<html lang="en">
+
+<canvas id = "gameCanvas" width="800" height="600">
+</canvas>
+
+
+
+
+
+<script>
+var canvas; //handle on info about dimensions of display area
+var canvasContext;  //underlying information
+
+var blockX = Math.floor((Math.random() * 100) + 1);
+var blockY = Math.floor((Math.random() * 100) + 1);;
+var blockWidth = 10;
+
+window.onload = function() { //code inside will not load until page is finished laoding
+  canvas = document.getElementById('gameCanvas');
+  canvasContext = canvas.getContext('2d');
+  var fps = 60; //fps
+
+  setInterval(function(){
+    move();
+    drawShit();
+    test();}, 1000/fps);
+
+
+}
+function reset() {
+  blockX = Math.floor((Math.random() * 100) + 1);
+  blockY = Math.floor((Math.random() * 600) + 1);
+  blockWidth = 10;
+}
+
+
+function move()
+{
+  if (blockWidth < 500)
+  {
+    blockWidth +=  2;
+    if (blockWidth <500)
+   {
+     blockX += 4;
+   }
+  }
+ else{
+   reset();
+ }
+}
+
+
+
+function test()
+{
+  var blocks = [];
+  //blocks[1] = colorRect(blockX,blockY, blockWidth, 110, 'blue'); // x, y, width, height, color
+
+}
+
+
+/*
+
+function blockLoop()
+{
+  var blocks = [];
+  for(int i = 0; i < 10; i++)
+  {
+    blocks[i] = colorRect(blockX,blockY,
+    blockWidth,10,'white');
+  }
+}
+*/
+
+function drawShit()
+{
+  colorRect(0,0, canvas.width, canvas.height,'black');
+  colorRect(blockX,blockY, blockWidth, 10, 'white'); // x, y, width, height, color
+}
+
+
+
+function colorRect(leftX,topY, width, height, drawColor)
+{
+  canvasContext.fillStyle = drawColor;
+  canvasContext.fillRect(leftX,topY, width,height);
+}
+
+</script>
+
+</html>
