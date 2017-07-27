@@ -19,20 +19,32 @@ window.onload = function() { //code inside will not load until page is finished 
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
   var fps = 60; //fps
-
   setInterval(function(){
-    move();
     drawShit();
+    move();
     test();}, 1000/fps);
 
 
-}
-function reset() {
-  blockX = Math.floor((Math.random() * 100) + 1);
-  blockY = Math.floor((Math.random() * 600) + 1);
-  blockWidth = 10;
+
 }
 
+var test2x = 200;
+function animate()
+{ 
+  requrestAnimationFrame();
+  canvasContext.beginPath();
+  canvasContext.moveTo(50,300);
+  canvasContext.lineTo(300,100);
+  canvasContext.lineTo(400,300);
+  canvasContext.strokeStyle = "#fa34a3";
+  canvasContext.stroke();
+}
+
+function reset() {
+  blockX = ((Math.random() * 100) + 1) * Math.random();
+  blockY = ((Math.random() * 600) + 1) * Math.random();
+  blockWidth = 10;
+}
 
 function move()
 {
@@ -50,34 +62,22 @@ function move()
 }
 
 
-
-function test()
-{
-  var blocks = [];
-  //blocks[1] = colorRect(blockX,blockY, blockWidth, 110, 'blue'); // x, y, width, height, color
-
-}
-
-
-/*
-
-function blockLoop()
-{
-  var blocks = [];
-  for(int i = 0; i < 10; i++)
-  {
-    blocks[i] = colorRect(blockX,blockY,
-    blockWidth,10,'white');
-  }
-}
-*/
-
 function drawShit()
 {
   colorRect(0,0, canvas.width, canvas.height,'black');
   colorRect(blockX,blockY, blockWidth, 10, 'white'); // x, y, width, height, color
 }
 
+
+function drawShit2()
+{
+  for(var i = 1; i <  10; i++)
+    {
+      colorRect(Math.random(), Math.random()* canvas.height, 10, 10, 'blue');
+      //  colorRect(blockX * Math.random(), Math.random() * canvas.width, 10, 10, 'yellow');
+      //  colorRect(blockX* Math.random(), Math.random() * canvas.width, 50, 10, 'green'); // x, y, width, height, color
+    }
+}
 
 
 function colorRect(leftX,topY, width, height, drawColor)
